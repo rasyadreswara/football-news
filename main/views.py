@@ -90,11 +90,9 @@ def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
-            return response
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
     context = {'form':form}
     return render(request, 'register.html', context)
 
